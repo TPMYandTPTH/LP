@@ -561,13 +561,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Share buttons
         document.getElementById('share-button-whatsapp')?.addEventListener('click', function() {
             const url = encodeURIComponent(document.getElementById('job-url').href);
-            const text = encodeURIComponent("Check out this job opportunity at Teleperformance!");
+            const text = encodeURIComponent("Check out this job opportunity at TP!");
             window.open(`https://wa.me/?text=${text}%20${url}`, '_blank');
         });
 
         document.getElementById('share-button-line')?.addEventListener('click', function() {
             const url = encodeURIComponent(document.getElementById('job-url').href);
-            const text = encodeURIComponent("Check out this job opportunity at Teleperformance!");
+            const text = encodeURIComponent("Check out this job opportunity at TP!");
             window.open(`https://line.me/R/msg/text/?${text}%0A%0A${url}`, '_blank');
         });
     }
