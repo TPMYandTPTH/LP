@@ -441,6 +441,10 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'grab':
                 iisValue = "Grab";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
+                break;            
+            case 'linkedin':
+                iisValue = "LinkedIn Recruiter";
+                iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
                 break;
             case 'Broadcast':
                 iisValue = "Broadcast Comms";
