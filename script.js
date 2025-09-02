@@ -137,8 +137,8 @@ document.addEventListener('DOMContentLoaded', function() {
         th: {
             about_us: "เกี่ยวกับเรา",
             careers: "อาชีพ",
-            hot_job: "งานร้อนแรง มาเลเซีย🔥",
-            hot_job: "งานร้อนแรง ไทย🔥",
+            hot_jobMY: "งานร้อนแรง มาเลเซีย🔥",
+            hot_jobTH: "งานร้อนแรง ไทย🔥",
             opportunities: "โอกาสในการทำงาน 🌟",
             refer_friend: "แนะนำเพื่อน🌟",
             stay_connected: "ติดต่อกันไว้",
@@ -176,6 +176,18 @@ document.addEventListener('DOMContentLoaded', function() {
         return urlParams.get('lang') || 'en';
     }
 
+    // Toggle video section based on language
+    function toggleVideoSection(language) {
+        const videoSection = document.getElementById('thai-video-section');
+        if (videoSection) {
+            if (language === 'th') {
+                videoSection.style.display = 'block';
+            } else {
+                videoSection.style.display = 'none';
+            }
+        }
+    }
+
     // Update content based on language
     function updateContent(language) {
         const langContent = languages[language] || languages['en'];
@@ -191,6 +203,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+
+        // Toggle video section visibility
+        toggleVideoSection(language);
     }
 
     // Load job data from JSON file
@@ -260,10 +275,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initially populate dropdowns with all options
     function populateInitialDropdowns() {
+        const currentPageLang = getLanguageFromUrl();
+        
         // Clear existing options
-        languageSelect.innerHTML = '<option value="" disabled selected>' + (languages[getLanguageFromUrl()]?.choose_language || 'Choose your language') + '</option>';
-        locationSelect.innerHTML = '<option value="" disabled selected>' + (languages[getLanguageFromUrl()]?.choose_location || 'Choose your location') + '</option>';
-        jobTypeSelect.innerHTML = '<option value="" disabled selected>' + (languages[getLanguageFromUrl()]?.choose_job_type || 'Choose your job type') + '</option>';
+        languageSelect.innerHTML = '<option value="" disabled selected>' + (languages[currentPageLang]?.choose_language || 'Choose your language') + '</option>';
+        locationSelect.innerHTML = '<option value="" disabled selected>' + (languages[currentPageLang]?.choose_location || 'Choose your location') + '</option>';
+        jobTypeSelect.innerHTML = '<option value="" disabled selected>' + (languages[currentPageLang]?.choose_job_type || 'Choose your job type') + '</option>';
 
         // Get all unique languages and locations
         const allLanguages = [...new Set(jsonData.map(item => item.Language))];
@@ -326,6 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Helper function to update a dropdown while preserving current selection if possible
     function updateDropdown(dropdown, options, currentValue) {
+        const currentPageLang = getLanguageFromUrl();
         const currentSelected = dropdown.value;
         dropdown.innerHTML = '';
         
@@ -335,8 +353,8 @@ document.addEventListener('DOMContentLoaded', function() {
         defaultOption.disabled = true;
         defaultOption.selected = true;
         defaultOption.textContent = dropdown.id === 'language-select' 
-            ? (languages[getLanguageFromUrl()]?.choose_language || 'Choose your language')
-            : (languages[getLanguageFromUrl()]?.choose_location || 'Choose your location');
+            ? (languages[currentPageLang]?.choose_language || 'Choose your language')
+            : (languages[currentPageLang]?.choose_location || 'Choose your location');
         dropdown.appendChild(defaultOption);
         
         // Add all options
@@ -357,9 +375,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateJobTypes() {
         const selectedLanguage = languageSelect.value;
         const selectedLocation = locationSelect.value;
+        const currentPageLang = getLanguageFromUrl();
         
         // Clear existing options
-        jobTypeSelect.innerHTML = '<option value="" disabled selected>' + (languages[getLanguageFromUrl()]?.choose_job_type || 'Choose your job type') + '</option>';
+        jobTypeSelect.innerHTML = '<option value="" disabled selected>' + (languages[currentPageLang]?.choose_job_type || 'Choose your job type') + '</option>';
         
         if (selectedLanguage && selectedLocation) {
             // Filter jobs based on selections
@@ -507,12 +526,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize event listeners
     function initEventListeners() {
-        // Language dropdown change - update locations
+        // Language dropdown change - ONLY update locations, NOT page language
         languageSelect.addEventListener('change', function() {
             updateLocations();
-            updateContent(this.value);
-            urlParams.set('lang', this.value);
-            window.history.replaceState(null, '', `?${urlParams.toString()}`);
+            // Removed updateContent() and URL update - this should NOT change page language
         });
 
         // Location dropdown change - update languages
@@ -524,9 +541,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const selectedLanguage = languageSelect.value;
                 const selectedLocation = locationSelect.value;
                 const selectedJob = jobTypeSelect.value;
+                const currentPageLang = getLanguageFromUrl();
                 
                 if (!selectedLanguage || !selectedLocation || !selectedJob) {
-                    alert(languages[getLanguageFromUrl()]?.select_all_options || 'Please select all options');
+                    alert(languages[currentPageLang]?.select_all_options || 'Please select all options');
                     return;
                 }
                 
@@ -543,12 +561,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     const finalLink = generateFinalURL(jobData["Evergreen link"], sourceParam, mediumParam);
                     openQrModal(finalLink);
                 } else {
-                    alert(languages[getLanguageFromUrl()]?.no_job_found || 'No matching job found');
+                    alert(languages[currentPageLang]?.no_job_found || 'No matching job found');
                 }
             });
         }
 
-        // Language selector dropdown items
+        // Language selector dropdown items (for PAGE language)
         document.querySelectorAll('.dropdown-item[data-lang]').forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -559,6 +577,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.history.replaceState(null, '', `${window.location.pathname}?${urlParams.toString()}`);
                 
                 setHotJob(selectedLanguage);
+                populateInitialDropdowns(); // Update dropdown placeholders with new language
             });
         });
 
