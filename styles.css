@@ -422,3 +422,11 @@ footer {
         padding: 0 15px;
     }
 }
+
+video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
