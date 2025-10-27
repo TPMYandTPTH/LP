@@ -1,3 +1,26 @@
+// ============ NEW: Interview booking logic ============
+const interviewLinks = {
+    'Mandarin': 'https://outlook.office.com/book/Chinese@teleperformance.onmicrosoft.com/s/7lYQUtBQp0O-ps7TnPavzA2?ismsaljsauthenabled',
+    'Cantonese': 'https://outlook.office.com/book/Chinese@teleperformance.onmicrosoft.com/s/MV4FDjJs7EeuSYmAOiz6zQ2?ismsaljsauthenabled',
+    'Korean': 'https://outlook.office.com/book/TeleperformanceMalaysiaThailandinterviews@teleperformance.onmicrosoft.com/s/VOKIhr5rN0CbMRcvzrUyIw2?ismsaljsauthenabled',
+    'Japanese': 'https://outlook.office.com/book/TeleperformanceMalaysiaThailandinterviews@teleperformance.onmicrosoft.com/s/G_rYtA5Pg0ebNjlKhHtTGg2?ismsaljsauthenabled',
+    'English': 'https://outlook.office.com/book/EnglishMalay@teleperformance.onmicrosoft.com/s/1VrPYr8cmESlwvf5rfq-Og2?ismsaljsauthenabled',
+    'Malay': 'https://outlook.office.com/book/EnglishMalay@teleperformance.onmicrosoft.com/s/1VrPYr8cmESlwvf5rfq-Og2?ismsaljsauthenabled',
+    'Thai': 'https://outlook.office.com/book/TeleperformanceMalaysiaSupportHiring@teleperformance.onmicrosoft.com/s/8uzkPuNYJEWfdPhpfRoQag2?ismsaljsauthenabled'
+};
+
+const agentJobKeywords = ['customer service', 'content mod', 'content moderator', 'agent', 'support', 'representative', 'specialist', 'associate', 'advisor', 'care'];
+
+function isAgentPosition(jobType) {
+    if (!jobType) return false;
+    return agentJobKeywords.some(keyword => jobType.toLowerCase().includes(keyword));
+}
+
+function getInterviewLink(languageOption) {
+    return interviewLinks[languageOption] || interviewLinks['English'];
+}
+// ============ END NEW CODE ============
+
 document.addEventListener('DOMContentLoaded', function() {
     // Set current year in footer
     document.getElementById('current-year').textContent = new Date().getFullYear();
@@ -28,7 +51,16 @@ document.addEventListener('DOMContentLoaded', function() {
             preferred_language: "Preferred Language",
             scan_to_apply: "Scan to Apply",
             select_all_options: "Please select all options",
-            no_job_found: "No matching job found"
+            no_job_found: "No matching job found",
+            step_one: "Submit Your Application",
+            step_one_desc: "Click the link below or scan the QR code to apply for this position",
+            apply_online: "Apply Online Now",
+            or_scan: "Or scan QR",
+            step_two: "Book Your Interview",
+            step_two_desc: "After submitting your application, schedule your interview at your convenience",
+            book_interview: "Schedule Interview Now",
+            interview_note: "Our team will contact you within 48 hours of your application",
+            share_opportunity: "Share This Opportunity"
         },
         zh: {
             about_us: "关于我们",
@@ -49,12 +81,21 @@ document.addEventListener('DOMContentLoaded', function() {
             choose_job_type: "选择工作类型",
             generate_qr: "生成二维码并立即申请！",
             intro_text: "我们正在寻找<span class='highlight'>合适的人选</span>",
-            team_response: "我们的团队将在<span class='highlighted-word'>48小时</span>内回复！",
-            share_via: "分享",
+            team_response: "我们的团队将在<span class='highlighted-word'>48小时内</span>回复！",
+            share_via: "分享方式",
             preferred_language: "首选语言",
-            scan_to_apply: "扫码申请",
+            scan_to_apply: "扫描申请",
             select_all_options: "请选择所有选项",
-            no_job_found: "未找到匹配的工作"
+            no_job_found: "未找到匹配的工作",
+            step_one: "提交您的申请",
+            step_one_desc: "点击下方链接或扫描二维码申请此职位",
+            apply_online: "立即在线申请",
+            or_scan: "或扫描二维码",
+            step_two: "预约面试",
+            step_two_desc: "提交申请后，请按您的方便时间安排面试",
+            book_interview: "立即预约面试",
+            interview_note: "我们的团队将在您申请后48小时内与您联系",
+            share_opportunity: "分享此机会"
         },
         jp: {
             about_us: "会社概要",
@@ -62,40 +103,49 @@ document.addEventListener('DOMContentLoaded', function() {
             hot_jobMY: "ホットジョブ マレーシア🔥",
             hot_jobTH: "ホットジョブ タイ🔥",
             opportunities: "求人情報 🌟",
-            refer_friend: "友達を紹介🌟",
+            refer_friend: "友人を紹介🌟",
             stay_connected: "つながりを保つ",
             contact_us: "お問い合わせ",
             language: "言語",
-            hot_job_content: "今週の注目の求人!",
-            hot_job_description: "当社の<strong>「今週の注目の求人」</strong>をチェックして、受賞歴のあるチームに参加しましょう！この役職は、素晴らしい成長機会、競争力のある福利厚生、最先端のAI技術に携わる機会を提供します。今すぐ応募して、私たちの卓越性への旅に参加しましょう！",
-            apply_now: "今すぐ応募!",
-            find_job: "理想の仕事を見つけよう!",
+            hot_job_content: "今週のホットジョブ！",
+            hot_job_description: "私たちの<strong>「今週のホットジョブ」</strong>をチェックして、受賞歴のあるチームに参加してください！この役割は、素晴らしい成長の機会、競争力のある福利厚生、最先端のAI技術を使用する機会を提供します。今すぐ応募して、卓越性への旅の一部になりましょう！",
+            apply_now: "今すぐ応募！",
+            find_job: "あなたにぴったりの仕事を見つけましょう！",
             choose_language: "言語を選択",
             choose_location: "場所を選択",
-            choose_job_type: "職種を選択",
-            generate_qr: "QRコードを生成して今すぐ応募!",
+            choose_job_type: "仕事の種類を選択",
+            generate_qr: "QRコードを生成して今すぐ申し込む！",
             intro_text: "私たちは<span class='highlight'>適任者</span>を探しています",
-            team_response: "チームは<span class='highlighted-word'>48時間</span>以内に返信します!",
+            team_response: "私たちのチームは<span class='highlighted-word'>48時間以内</span>に返信します！",
             share_via: "共有",
             preferred_language: "希望言語",
             scan_to_apply: "スキャンして応募",
             select_all_options: "すべてのオプションを選択してください",
-            no_job_found: "一致する仕事が見つかりません"
+            no_job_found: "一致する仕事が見つかりません",
+            step_one: "応募書類を提出",
+            step_one_desc: "下のリンクをクリックするか、QRコードをスキャンしてこのポジションに応募してください",
+            apply_online: "今すぐオンラインで応募",
+            or_scan: "またはQRをスキャン",
+            step_two: "面接を予約",
+            step_two_desc: "応募後、ご都合の良い時間に面接を予約してください",
+            book_interview: "今すぐ面接を予約",
+            interview_note: "チームは応募後48時間以内にご連絡いたします",
+            share_opportunity: "この機会を共有"
         },
         kr: {
-            about_us: "회사소개",
-            careers: "채용정보",
-            hot_jobMY: "핫잡 말레이시아🔥",
-            hot_jobTH: "핫잡 태국🔥",
-            opportunities: "채용기회 🌟",
-            refer_friend: "친구추천🌟",
-            stay_connected: "연락유지",
+            about_us: "회사 소개",
+            careers: "채용",
+            hot_jobMY: "핫한 직업 말레이시아🔥",
+            hot_jobTH: "핫한 직업 태국🔥",
+            opportunities: "기회 🌟",
+            refer_friend: "친구 추천🌟",
+            stay_connected: "연결 유지",
             contact_us: "문의하기",
             language: "언어",
-            hot_job_content: "이번 주 핫잡!",
-            hot_job_description: "우리의 <strong>\"이번 주 핫잡\"</strong>을 확인하고 수상 경력이 있는 팀에 합류하세요! 이 역할은 훌륭한 성장 기회, 경쟁력 있는 혜택 및 최첨단 AI 기술을 사용할 수 있는 기회를 제공합니다. 지금 지원하여 우리의 탁월함을 향한 여정에 동참하세요!",
-            apply_now: "지금 지원하세요!",
-            find_job: "당신에게 딱 맞는 일자리를 찾아보세요!",
+            hot_job_content: "이번 주 핫한 직업!",
+            hot_job_description: "<strong>\"이번 주 핫한 직업\"</strong>을 확인하고 수상 경력이 있는 팀에 합류하세요! 이 역할은 환상적인 성장 기회, 경쟁력 있는 혜택, 최첨단 AI 기술을 사용할 기회를 제공합니다. 지금 지원하고 우수성을 향한 여정의 일부가 되세요!",
+            apply_now: "지금 지원!",
+            find_job: "완벽한 직업을 찾으세요!",
             choose_language: "언어 선택",
             choose_location: "위치 선택",
             choose_job_type: "직무 유형 선택",
@@ -106,7 +156,16 @@ document.addEventListener('DOMContentLoaded', function() {
             preferred_language: "선호 언어",
             scan_to_apply: "스캔하여 지원",
             select_all_options: "모든 옵션을 선택하세요",
-            no_job_found: "일치하는 직업을 찾을 수 없음"
+            no_job_found: "일치하는 직업을 찾을 수 없음",
+            step_one: "지원서 제출",
+            step_one_desc: "아래 링크를 클릭하거나 QR 코드를 스캔하여 이 포지션에 지원하세요",
+            apply_online: "지금 온라인으로 지원",
+            or_scan: "또는 QR 스캔",
+            step_two: "면접 예약",
+            step_two_desc: "지원서를 제출한 후 편리한 시간에 면접을 예약하세요",
+            book_interview: "지금 면접 예약",
+            interview_note: "저희 팀이 지원 후 48시간 이내에 연락드립니다",
+            share_opportunity: "이 기회 공유"
         },
         my: {
             about_us: "Tentang Kami",
@@ -132,7 +191,16 @@ document.addEventListener('DOMContentLoaded', function() {
             preferred_language: "Bahasa Pilihan",
             scan_to_apply: "Imbas untuk Memohon",
             select_all_options: "Sila pilih semua pilihan",
-            no_job_found: "Tiada pekerjaan yang sepadan ditemui"
+            no_job_found: "Tiada pekerjaan yang sepadan ditemui",
+            step_one: "Hantar Permohonan Anda",
+            step_one_desc: "Klik pautan di bawah atau imbas kod QR untuk memohon jawatan ini",
+            apply_online: "Mohon Dalam Talian Sekarang",
+            or_scan: "Atau imbas QR",
+            step_two: "Tempah Temu Duga Anda",
+            step_two_desc: "Selepas menghantar permohonan, jadualkan temu duga anda mengikut keselesaan anda",
+            book_interview: "Jadualkan Temu Duga Sekarang",
+            interview_note: "Pasukan kami akan menghubungi anda dalam masa 48 jam selepas permohonan",
+            share_opportunity: "Kongsi Peluang Ini"
         },
         th: {
             about_us: "เกี่ยวกับเรา",
@@ -158,7 +226,16 @@ document.addEventListener('DOMContentLoaded', function() {
             preferred_language: "ภาษาที่ต้องการ",
             scan_to_apply: "สแกนเพื่อสมัคร",
             select_all_options: "กรุณาเลือกตัวเลือกทั้งหมด",
-            no_job_found: "ไม่พบงานที่ตรงกับเงื่อนไข"
+            no_job_found: "ไม่พบงานที่ตรงกับเงื่อนไข",
+            step_one: "ส่งใบสมัคร",
+            step_one_desc: "คลิกลิงก์ด้านล่างหรือสแกน QR Code เพื่อสมัครตำแหน่งนี้",
+            apply_online: "สมัครออนไลน์ทันที",
+            or_scan: "หรือสแกน QR",
+            step_two: "จองการสัมภาษณ์",
+            step_two_desc: "หลังจากส่งใบสมัคร กำหนดเวลาสัมภาษณ์ตามความสะดวกของคุณ",
+            book_interview: "จองการสัมภาษณ์ทันที",
+            interview_note: "ทีมของเราจะติดต่อคุณภายใน 48 ชั่วโมงหลังจากการสมัคร",
+            share_opportunity: "แชร์โอกาสนี้"
         }
     };
 
@@ -481,8 +558,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return decodeURIComponent(finalURL.toString());
     }
 
-    // Generate QR code and show modal
-    function openQrModal(url) {
+    // ============ MODIFIED: Generate QR code and show modal ============
+    function openQrModal(url, selectedLanguage, selectedJob) {
         const qr = new QRious({
             element: document.getElementById('qr-code'),
             value: url,
@@ -495,8 +572,36 @@ document.addEventListener('DOMContentLoaded', function() {
         jobUrlElement.href = url;
         jobUrlElement.textContent = url;
         
+        // NEW: Check if this is an agent position and show/hide interview step
+        const interviewStep = document.getElementById('interview-step');
+        if (isAgentPosition(selectedJob)) {
+            interviewStep.style.display = 'block';
+            const interviewUrl = getInterviewLink(selectedLanguage);
+            const interviewUrlElement = document.getElementById('interview-url');
+            interviewUrlElement.href = interviewUrl;
+        } else {
+            interviewStep.style.display = 'none';
+        }
+        
         const qrModal = new bootstrap.Modal(document.getElementById('qrModal'));
         qrModal.show();
+        
+        // Add QR expand functionality
+        const qrCanvas = document.getElementById('qr-code');
+        qrCanvas.onclick = function() {
+            // Create expanded QR code
+            const expandedQR = new QRious({
+                element: document.getElementById('qr-code-expanded'),
+                value: url,
+                size: 400,
+                background: 'white',
+                foreground: 'black'
+            });
+            
+            // Show expanded modal
+            const expandModal = new bootstrap.Modal(document.getElementById('qrExpandedModal'));
+            expandModal.show();
+        };
     }
 
     // Set hot job based on language
@@ -529,13 +634,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Language dropdown change - ONLY update locations, NOT page language
         languageSelect.addEventListener('change', function() {
             updateLocations();
-            // Removed updateContent() and URL update - this should NOT change page language
         });
 
         // Location dropdown change - update languages
         locationSelect.addEventListener('change', updateLanguages);
 
-        // Generate QR button click
+        // Generate QR button click - MODIFIED to pass language and job type
         if (generateBtn) {
             generateBtn.addEventListener('click', function() {
                 const selectedLanguage = languageSelect.value;
@@ -559,7 +663,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const sourceParam = urlParams.get('utm_source') || '';
                     const mediumParam = urlParams.get('utm_medium') || '';
                     const finalLink = generateFinalURL(jobData["Evergreen link"], sourceParam, mediumParam);
-                    openQrModal(finalLink);
+                    openQrModal(finalLink, selectedLanguage, selectedJob); // MODIFIED: pass extra parameters
                 } else {
                     alert(languages[currentPageLang]?.no_job_found || 'No matching job found');
                 }
@@ -577,7 +681,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.history.replaceState(null, '', `${window.location.pathname}?${urlParams.toString()}`);
                 
                 setHotJob(selectedLanguage);
-                populateInitialDropdowns(); // Update dropdown placeholders with new language
+                populateInitialDropdowns();
             });
         });
 
