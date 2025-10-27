@@ -205,22 +205,31 @@ header {
     box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.1);
 }
 
+/* MODIFIED: Softer button styles with shadows instead of huge black buttons */
 .btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    background-color: var(--secondary-color);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
     padding: 0.75rem 1.5rem;
     font-weight: 600;
     border-radius: 0.5rem;
     transition: all var(--transition-speed) ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:hover {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--secondary-color);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .highlighted-word {
@@ -288,6 +297,176 @@ header {
     color: white;
 }
 
+/* ============ Enhanced Modal Styles for Two-Step Process ============ */
+.application-step {
+    background-color: var(--light-gray);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 2px solid transparent;
+    transition: all var(--transition-speed) ease;
+}
+
+.application-step:hover {
+    border-color: var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.step-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.step-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.step-content {
+    padding-left: 56px;
+}
+
+.step-description {
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+/* MODIFIED: Softer apply and interview buttons with shadows */
+.btn-apply,
+.btn-interview {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.875rem 2rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all var(--transition-speed) ease;
+    font-size: 1rem;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-apply {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-apply:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.btn-interview {
+    background-color: var(--secondary-color);
+    color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-interview:hover {
+    background-color: #28a745;
+    color: var(--secondary-color);
+    border-color: #28a745;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(40, 167, 69, 0.2);
+}
+
+/* MODIFIED: Fixed long URL breaking */
+#job-url {
+    word-break: break-all;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+/* MODIFIED: QR Section on separate line */
+.qr-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.qr-canvas {
+    max-width: 120px;
+    height: auto;
+    border: 2px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    background-color: var(--secondary-color);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+}
+
+.qr-canvas:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* NEW: Expanded QR modal styles */
+.qr-canvas-expanded {
+    max-width: 100%;
+    width: 400px;
+    height: auto;
+    border: 2px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background-color: var(--secondary-color);
+}
+
+.qr-label {
+    font-size: 0.875rem;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.interview-note {
+    background-color: var(--secondary-color);
+    border-left: 4px solid #28a745;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.interview-note i {
+    color: #28a745;
+}
+
+.share-section {
+    border-top: 2px solid var(--light-gray);
+    padding-top: 1.5rem;
+    text-align: center;
+}
+
+.share-title {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+/* ============ END STYLES ============ */
+
 /* Footer */
 footer {
     background-color: var(--primary-color);
@@ -332,6 +511,11 @@ footer {
     .job-section {
         padding: 3rem 0;
     }
+
+    .step-content {
+        padding-left: 0;
+        margin-top: 1rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -355,6 +539,16 @@ footer {
         flex-direction: column;
         align-items: flex-start;
     }
+
+    .btn-apply,
+    .btn-interview {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .qr-canvas-expanded {
+        width: 300px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -374,6 +568,16 @@ footer {
     
     .hot-job-card, .find-job-card {
         padding: 1.5rem;
+    }
+
+    .step-number {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+    }
+
+    .step-title {
+        font-size: 1.1rem;
     }
 }
 
@@ -396,14 +600,13 @@ footer {
 #thai-video-section,
 .video-wrapper {
     width: 100%;
-    height: 100vh; /* Use full viewport height */
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-/* Make the video container flex-centered */
 .video-container {
     width: 100%;
     max-width: 100%;
@@ -414,7 +617,6 @@ footer {
     height: 80vh;
 }
 
-/* Actual video scaling */
 .video-container video {
     height: 90vh;
     width: auto;
@@ -424,11 +626,8 @@ footer {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Optional: center the title above the video */
 .video-title {
     font-size: 1.5rem;
     margin-bottom: 20px;
     text-align: center;
 }
-
-
