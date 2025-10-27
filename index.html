@@ -216,22 +216,78 @@
 
     <!-- QR Modal -->
     <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="qrModalLabel" data-translate="scan_to_apply">Scan to Apply</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-center">
-                    <canvas id="qr-code" class="mb-3"></canvas>
-                    <p><a id="job-url" href="#" target="_blank" rel="noopener" class="text-break"></a></p>
-                    <div class="share-buttons">
-                        <h5 class="mb-3" data-translate="share_via">Share Via</h5>
-                        <div>
-                            <button id="share-button-whatsapp" class="share-btn" aria-label="Share on WhatsApp"><i class="fab fa-whatsapp"></i></button>
-                            <button id="share-button-line" class="share-btn" aria-label="Share on Line"><i class="fab fa-line"></i></button>
+                <div class="modal-body">
+                    <!-- Step 1: Apply -->
+                    <div class="application-step">
+                        <div class="step-header">
+                            <div class="step-number">1</div>
+                            <h4 class="step-title" data-translate="step_one">Submit Your Application</h4>
+                        </div>
+                        <div class="step-content">
+                            <p class="step-description" data-translate="step_one_desc">Click the link below or scan the QR code to apply for this position</p>
+                            <!-- URL on first line -->
+                            <div class="mb-3">
+                                <a id="job-url" href="#" target="_blank" rel="noopener" class="btn btn-apply d-block text-break">
+                                    <i class="fas fa-external-link-alt me-2"></i>
+                                    <span data-translate="apply_online">Apply Online Now</span>
+                                </a>
+                            </div>
+                            <!-- QR Code on separate line -->
+                            <div class="qr-section">
+                                <p class="qr-label mb-2" data-translate="or_scan">Or scan QR</p>
+                                <canvas id="qr-code" class="qr-canvas" style="cursor: pointer;"></canvas>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Step 2: Book Interview (Only for agent positions) -->
+                    <div id="interview-step" class="application-step" style="display: none;">
+                        <div class="step-header">
+                            <div class="step-number">2</div>
+                            <h4 class="step-title" data-translate="step_two">Book Your Interview</h4>
+                        </div>
+                        <div class="step-content">
+                            <p class="step-description" data-translate="step_two_desc">After submitting your application, schedule your interview at your convenience</p>
+                            <a id="interview-url" href="#" target="_blank" rel="noopener" class="btn btn-interview">
+                                <i class="fas fa-calendar-check me-2"></i>
+                                <span data-translate="book_interview">Schedule Interview Now</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Share Section -->
+                    <div class="share-section mt-4">
+                        <h6 class="share-title" data-translate="share_via">Share Via</h6>
+                        <div class="share-buttons">
+                            <button id="share-button-whatsapp" class="share-btn" aria-label="Share on WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
+                            <button id="share-button-line" class="share-btn" aria-label="Share on Line">
+                                <i class="fab fa-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Expanded Modal (for clicking to expand) -->
+    <div class="modal fade" id="qrExpandedModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" data-translate="scan_to_apply">Scan to Apply</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <canvas id="qr-code-expanded" class="qr-canvas-expanded"></canvas>
                 </div>
             </div>
         </div>
