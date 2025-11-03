@@ -502,6 +502,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 iisValue = "Mobile Stand";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
                 break;
+            case 'university':
+            case 'University':
+                iisValue = "University";
+                iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
+                break;
             case 'poster':
                 iisValue = "Poster";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
