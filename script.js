@@ -473,13 +473,13 @@ document.addEventListener('DOMContentLoaded', function() {
         let finalURL = new URL(baseURL);
         let iisValue, iisnValue;
 
-        switch (medium) {
+        // Normalise to lowercase so casing in the URL never matters
+        // e.g. "LinkedIn", "linkedin", "LINKEDIN" all work
+        switch (medium.toLowerCase()) {
             case 'social':
-            case 'Social':
                 iisValue = "Social Media";
-                iisnValue = `${encodeURIComponent(source).replace(/%2B/g, '+')}`;
+                iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
                 break;
-            case 'Career':
             case 'career':
                 iisValue = "Career Fair";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
@@ -489,12 +489,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
                 break;
             case 'mobile':
-            case 'Mobile':
                 iisValue = "Mobile Stand";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
                 break;
             case 'university':
-            case 'University':
                 iisValue = "University";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
                 break;
@@ -510,7 +508,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 iisValue = "Physical QR";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
                 break;
-            case 'FoTG':
+            case 'fotg':
                 iisValue = "FoTG";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
                 break;
@@ -522,7 +520,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 iisValue = "Banner 2";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
                 break;
-            case 'Email':
+            case 'email':
                 iisValue = "Email Blast";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
                 break;
@@ -533,17 +531,17 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'grab':
                 iisValue = "Grab";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
-                break;            
+                break;
             case 'linkedin':
                 iisValue = "LinkedIn Recruiter";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
                 break;
-            case 'Broadcast':
+            case 'broadcast':
                 iisValue = "Broadcast Comms";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
                 break;
             default:
-                console.error("Unknown utm_medium");
+                console.error("Unknown utm_medium:", medium);
                 return baseURL;
         }
 
@@ -669,19 +667,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Append current URL params to all active landing page buttons
-    function appendParamsToLandingButtons() {
-        const currentParams = window.location.search;
-        if (!currentParams) return; // No params in URL, nothing to append
-
+    // Append current URL params to landing page buttons at click time (always fresh)
+    function initLandingButtonParams() {
         document.querySelectorAll('.landing-page-btn.active').forEach(btn => {
-            // Store the clean base URL on first run so it's never stacked on repeated calls
-            if (!btn.getAttribute('data-base-url')) {
-                btn.setAttribute('data-base-url', btn.href.split('?')[0]);
-            }
+            // Store the clean base URL once so it's never corrupted by repeated clicks
+            btn.setAttribute('data-base-url', btn.href.split('?')[0]);
 
-            const baseUrl = btn.getAttribute('data-base-url');
-            btn.href = baseUrl + currentParams;
+            btn.addEventListener('click', function(e) {
+                const currentParams = window.location.search;
+                if (currentParams) {
+                    e.preventDefault();
+                    const destination = btn.getAttribute('data-base-url') + currentParams;
+                    window.open(destination, '_blank');
+                }
+                // If no params at all, the default href fires normally
+            });
         });
     }
 
@@ -690,7 +690,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateContent(getLanguageFromUrl());
         loadJobData();
         initEventListeners();
-        appendParamsToLandingButtons();
+        initLandingButtonParams();
     }
 
     init();
