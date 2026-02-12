@@ -631,7 +631,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     const urlParams = new URLSearchParams(window.location.search);
                     const sourceParam = urlParams.get('utm_source') || '';
                     const mediumParam = urlParams.get('utm_medium') || '';
-                    const finalLink = generateFinalURL(jobData["Evergreen link"], sourceParam, mediumParam);
+
+                    // Build the iCIMS link (iis + iisn from utm_source + utm_medium)
+                    let finalLink = generateFinalURL(jobData["Evergreen link"], sourceParam, mediumParam);
+
+                    // Append ALL remaining URL params (utm_campaign, lang, etc.)
+                    // so nothing from the original URL is lost
+                    const finalURL = new URL(finalLink);
+                    urlParams.forEach((value, key) => {
+                        if (!finalURL.searchParams.has(key)) {
+                            finalURL.searchParams.set(key, value);
+                        }
+                    });
+                    finalLink = finalURL.toString();
+
                     openQrModal(finalLink, selectedLanguage, selectedJob);
                 } else {
                     alert(languages[currentPageLang]?.no_job_found || 'No matching job found');
