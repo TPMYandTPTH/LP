@@ -166,7 +166,7 @@ header {
     background-color: var(--primary-color);
 }
 
-.hot-job-card, .find-job-card {
+.landing-pages-card, .find-job-card {
     background-color: var(--secondary-color);
     border-radius: 0.5rem;
     padding: 2rem;
@@ -176,13 +176,68 @@ header {
     transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
 }
 
-.hot-job-card:hover, .find-job-card:hover {
+.landing-pages-card:hover, .find-job-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-.hot-job-card {
-    border-right: 1px solid var(--border-color);
+/* Landing Page Buttons Section */
+.landing-page-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.landing-page-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 0.5rem;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.landing-page-btn.active:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.landing-page-btn.disabled {
+    border-color: var(--dark-gray);
+    color: #999;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.landing-page-btn.disabled:hover {
+    transform: none;
+    background-color: var(--secondary-color);
+    color: #999;
+}
+
+.soon-badge {
+    background-color: #ffc107;
+    color: #000;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.landing-page-btn i {
+    font-size: 1.1rem;
 }
 
 .form-label {
@@ -467,23 +522,143 @@ header {
 }
 /* ============ END STYLES ============ */
 
-/* Footer */
+/* Footer - JLP Style */
 footer {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    padding: 2rem 0;
+    background-color: #111111;
+    color: #ffffff;
     margin-top: auto;
 }
 
-.footer-link {
-    color: var(--secondary-color);
-    text-decoration: none;
-    transition: all var(--transition-speed) ease;
+.footer-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem 2.5rem;
+    display: flex;
+    justify-content: center;
 }
 
-.footer-link:hover {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: underline;
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 600px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.footer-logo img {
+    height: 40px;
+    width: auto;
+    filter: brightness(0) invert(1);
+}
+
+.footer-logo-text {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+}
+
+.footer-desc {
+    color: #aaaaaa;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.badge-item {
+    background-color: #1e1e1e;
+    border: 1px solid #333333;
+    color: #cccccc;
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+.footer-cta {
+    margin-top: 0.5rem;
+}
+
+.btn-gold {
+    display: inline-block;
+    background-color: #c9a84c;
+    color: #000000;
+    padding: 0.75rem 2.5rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    border: 2px solid #c9a84c;
+}
+
+.btn-gold:hover {
+    background-color: #b8943d;
+    border-color: #b8943d;
+    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201, 168, 76, 0.3);
+}
+
+.footer-bottom {
+    border-top: 1px solid #2a2a2a;
+    padding: 1.5rem 2rem;
+    text-align: center;
+}
+
+.ssm-info {
+    color: #666666;
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-bottom p {
+    color: #888888;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.footer-bottom a {
+    color: #aaaaaa;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-bottom a:hover {
+    color: #c9a84c;
+}
+
+@media (max-width: 576px) {
+    .footer-content {
+        padding: 2.5rem 1.5rem 2rem;
+    }
+
+    .badges {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-gold {
+        width: 100%;
+        text-align: center;
+    }
 }
 
 /* Animation */
@@ -500,12 +675,6 @@ footer {
 @media (max-width: 992px) {
     .hero-title {
         font-size: 2.5rem;
-    }
-    
-    .hot-job-card {
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        margin-bottom: 2rem;
     }
     
     .job-section {
@@ -549,6 +718,15 @@ footer {
     .qr-canvas-expanded {
         width: 300px;
     }
+    
+    .landing-page-btn {
+        font-size: 0.9rem;
+        padding: 0.875rem 1.25rem;
+    }
+    
+    .landing-page-btn span {
+        font-size: 0.85rem;
+    }
 }
 
 @media (max-width: 576px) {
@@ -566,7 +744,7 @@ footer {
         display: inline-block;
     }
     
-    .hot-job-card, .find-job-card {
+    .landing-pages-card, .find-job-card {
         padding: 1.5rem;
     }
 
