@@ -37,9 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
             stay_connected: "Stay Connected",
             contact_us: "Contact Us",
             language: "Language",
-            hot_job_content: "Hot Job Of The Week!",
-            hot_job_description: "Check out our <strong>\"Hot Job of the Week\"</strong> and join our award-winning team! This role offers fantastic growth opportunities, competitive benefits, and the chance to work with cutting-edge AI technology. Apply now and be part of our journey to excellence!",
-            apply_now: "Apply Now!",
+            language_pages: "Language-Specific Pages",
+            language_pages_desc: "Explore our dedicated landing pages for each language",
             find_job: "Find your perfect job!",
             choose_language: "Choose your language",
             choose_location: "Choose your location",
@@ -72,9 +71,8 @@ document.addEventListener('DOMContentLoaded', function() {
             stay_connected: "保持联系",
             contact_us: "联系我们",
             language: "语言",
-            hot_job_content: "本周热门职位!",
-            hot_job_description: "查看我们的<strong>\"本周热门职位\"</strong>，加入我们屡获殊荣的团队吧！这个职位提供了绝佳的成长机会、具有竞争力的福利待遇，以及与尖端AI技术合作的机会。立即申请，成为我们追求卓越之旅的一部分！",
-            apply_now: "立即申请！",
+            language_pages: "语言专属页面",
+            language_pages_desc: "浏览我们为各语言专门设计的招聘页面",
             find_job: "找到你的理想工作！",
             choose_language: "选择语言",
             choose_location: "选择地点",
@@ -107,9 +105,8 @@ document.addEventListener('DOMContentLoaded', function() {
             stay_connected: "つながりを保つ",
             contact_us: "お問い合わせ",
             language: "言語",
-            hot_job_content: "今週のホットジョブ！",
-            hot_job_description: "私たちの<strong>「今週のホットジョブ」</strong>をチェックして、受賞歴のあるチームに参加してください！この役割は、素晴らしい成長の機会、競争力のある福利厚生、最先端のAI技術を使用する機会を提供します。今すぐ応募して、卓越性への旅の一部になりましょう！",
-            apply_now: "今すぐ応募！",
+            language_pages: "言語別ページ",
+            language_pages_desc: "各言語専用のランディングページをご覧ください",
             find_job: "あなたにぴったりの仕事を見つけましょう！",
             choose_language: "言語を選択",
             choose_location: "場所を選択",
@@ -142,9 +139,8 @@ document.addEventListener('DOMContentLoaded', function() {
             stay_connected: "연결 유지",
             contact_us: "문의하기",
             language: "언어",
-            hot_job_content: "이번 주 핫한 직업!",
-            hot_job_description: "<strong>\"이번 주 핫한 직업\"</strong>을 확인하고 수상 경력이 있는 팀에 합류하세요! 이 역할은 환상적인 성장 기회, 경쟁력 있는 혜택, 최첨단 AI 기술을 사용할 기회를 제공합니다. 지금 지원하고 우수성을 향한 여정의 일부가 되세요!",
-            apply_now: "지금 지원!",
+            language_pages: "언어별 페이지",
+            language_pages_desc: "각 언어를 위한 전용 랜딩 페이지를 살펴보세요",
             find_job: "완벽한 직업을 찾으세요!",
             choose_language: "언어 선택",
             choose_location: "위치 선택",
@@ -177,9 +173,8 @@ document.addEventListener('DOMContentLoaded', function() {
             stay_connected: "Terus Berhubung",
             contact_us: "Hubungi Kami",
             language: "Bahasa",
-            hot_job_content: "Kerja Hangat Minggu Ini!",
-            hot_job_description: "Lihat <strong>\"Kerja Hangat Minggu Ini\"</strong> kami dan sertai pasukan pemenang anugerah kami! Peranan ini menawarkan peluang pertumbuhan yang hebat, faedah yang kompetitif, dan peluang untuk bekerja dengan teknologi AI canggih. Mohon sekarang dan jadilah sebahagian daripada perjalanan kami ke kecemerlangan!",
-            apply_now: "Mohon Sekarang!",
+            language_pages: "Halaman Khusus Bahasa",
+            language_pages_desc: "Terokai halaman khusus kami untuk setiap bahasa",
             find_job: "Cari pekerjaan sempurna anda!",
             choose_language: "Pilih bahasa anda",
             choose_location: "Pilih lokasi anda",
@@ -212,9 +207,8 @@ document.addEventListener('DOMContentLoaded', function() {
             stay_connected: "ติดต่อกันไว้",
             contact_us: "ติดต่อเรา",
             language: "ภาษา",
-            hot_job_content: "งานร้อนแรงประจำสัปดาห์!",
-            hot_job_description: "ตรวจสอบ<strong>\"งานร้อนแรงประจำสัปดาห์\"</strong>ของเราและเข้าร่วมทีมที่ได้รับรางวัลของเรา! ตำแหน่งนี้เปิดโอกาสในการเติบโตอย่างยอดเยี่ยม สวัสดิการที่แข่งขันได้ และโอกาสในการทำงานกับเทคโนโลยี AI ล้ำสมัย สมัครตอนนี้และเป็นส่วนหนึ่งของการเดินทางสู่ความเป็นเลิศของเรา!",
-            apply_now: "สมัครเลย!",
+            language_pages: "หน้าเฉพาะภาษา",
+            language_pages_desc: "สำรวจหน้าแลนดิ้งเฉพาะของเราสำหรับแต่ละภาษา",
             find_job: "หางานในฝันของคุณ!",
             choose_language: "เลือกภาษาของคุณ",
             choose_location: "เลือกสถานที่ของคุณ",
@@ -245,7 +239,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const locationSelect = document.getElementById('location-select');
     const jobTypeSelect = document.getElementById('job-type-select');
     const generateBtn = document.getElementById('generate-btn');
-    const applyBtn = document.getElementById('apply-btn');
     const urlParams = new URLSearchParams(window.location.search);
 
     // Get current language from URL
@@ -295,7 +288,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 jsonData = data;
                 populateInitialDropdowns();
-                setHotJob(getLanguageFromUrl());
             })
             .catch(error => {
                 console.error('Error loading job data:', error);
@@ -346,7 +338,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 ];
                 populateInitialDropdowns();
-                setHotJob(getLanguageFromUrl());
             });
     }
 
@@ -563,7 +554,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return decodeURIComponent(finalURL.toString());
     }
 
-    // ============ MODIFIED: Generate QR code and show modal ============
+    // Generate QR code and show modal
     function openQrModal(url, selectedLanguage, selectedJob) {
         const qr = new QRious({
             element: document.getElementById('qr-code'),
@@ -577,7 +568,7 @@ document.addEventListener('DOMContentLoaded', function() {
         jobUrlElement.href = url;
         jobUrlElement.textContent = url;
         
-        // NEW: Check if this is an agent position and show/hide interview step
+        // Check if this is an agent position and show/hide interview step
         const interviewStep = document.getElementById('interview-step');
         if (isAgentPosition(selectedJob)) {
             interviewStep.style.display = 'block';
@@ -609,31 +600,6 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    // Set hot job based on language
-    function setHotJob(lang) {
-        const hotJobs = {
-            en: jsonData.find(job => job.Language === "English"),
-            zh: jsonData.find(job => job.Language === "Mandarin"),
-            jp: jsonData.find(job => job.Language === "Japanese"),
-            kr: jsonData.find(job => job.Language === "Korean"),
-            my: jsonData.find(job => job.Language === "Malay"),
-            th: jsonData.find(job => job.Language === "Thai")
-        };
-        
-        const hotJob = hotJobs[lang] || jsonData[0];
-        
-        if (hotJob && applyBtn) {
-            applyBtn.onclick = function(e) {
-                e.preventDefault();
-                const urlParams = new URLSearchParams(window.location.search);
-                const sourceParam = urlParams.get('utm_source') || '';
-                const mediumParam = urlParams.get('utm_medium') || '';
-                const finalLink = generateFinalURL(hotJob['Evergreen link'], sourceParam, mediumParam);
-                window.open(finalLink, '_blank');
-            };
-        }
-    }
-
     // Initialize event listeners
     function initEventListeners() {
         // Language dropdown change - ONLY update locations, NOT page language
@@ -644,7 +610,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Location dropdown change - update languages
         locationSelect.addEventListener('change', updateLanguages);
 
-        // Generate QR button click - MODIFIED to pass language and job type
+        // Generate QR button click
         if (generateBtn) {
             generateBtn.addEventListener('click', function() {
                 const selectedLanguage = languageSelect.value;
@@ -668,7 +634,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const sourceParam = urlParams.get('utm_source') || '';
                     const mediumParam = urlParams.get('utm_medium') || '';
                     const finalLink = generateFinalURL(jobData["Evergreen link"], sourceParam, mediumParam);
-                    openQrModal(finalLink, selectedLanguage, selectedJob); // MODIFIED: pass extra parameters
+                    openQrModal(finalLink, selectedLanguage, selectedJob);
                 } else {
                     alert(languages[currentPageLang]?.no_job_found || 'No matching job found');
                 }
@@ -685,7 +651,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 urlParams.set('lang', selectedLanguage);
                 window.history.replaceState(null, '', `${window.location.pathname}?${urlParams.toString()}`);
                 
-                setHotJob(selectedLanguage);
                 populateInitialDropdowns();
             });
         });
@@ -704,11 +669,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Append current URL params to all active landing page buttons
+    function appendParamsToLandingButtons() {
+        const currentParams = window.location.search;
+        if (!currentParams) return; // No params in URL, nothing to append
+
+        document.querySelectorAll('.landing-page-btn.active').forEach(btn => {
+            // Store the clean base URL on first run so it's never stacked on repeated calls
+            if (!btn.getAttribute('data-base-url')) {
+                btn.setAttribute('data-base-url', btn.href.split('?')[0]);
+            }
+
+            const baseUrl = btn.getAttribute('data-base-url');
+            btn.href = baseUrl + currentParams;
+        });
+    }
+
     // Initialize everything
     function init() {
         updateContent(getLanguageFromUrl());
         loadJobData();
         initEventListeners();
+        appendParamsToLandingButtons();
     }
 
     init();
