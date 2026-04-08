@@ -1,3 +1,6 @@
+Here is the full, corrected JavaScript code. I have updated the `generateFinalURL` function to explicitly include `mode=job` and ensure spaces are formatted as `+` signs to match your target URL structure exactly.
+
+```javascript
 // ============ Interview booking logic ============
 const interviewLinks = {
     'Mandarin': 'https://outlook.office.com/book/Chinese@teleperformance.onmicrosoft.com/s/7lYQUtBQp0O-ps7TnPavzA2?ismsaljsauthenabled',
@@ -440,17 +443,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ============================================================
-    // FIX: Generate final iCIMS URL from utm_medium → iis mapping
-    // - Strips ALL existing query params from the stored Evergreen link
-    // - Only sets iis and iisn; never leaks utm_* params into iCIMS
+    // CORRECTED: Generate final iCIMS URL
+    // - Adds mode=job
+    // - Uses + instead of %20 for spaces
+    // - Strips old params from data.json
     // ============================================================
     function generateFinalURL(baseURL, source, medium) {
-        // Strip any existing query string from the stored link (e.g. ?mode=job&iis=LandingPage&iisn=)
+        // 1. Strip existing query params to remove hardcoded junk
         const cleanBase = baseURL.split('?')[0];
-        const finalURL = new URL(cleanBase);
 
         let iisValue;
 
+        // 2. Map utm_medium to iCIMS 'iis'
         switch (medium.toLowerCase()) {
             case 'tpmy':       iisValue = "TPMY Website";      break;
             case 'digitalm':   iisValue = "Digital Marketing"; break;
@@ -475,9 +479,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 return cleanBase;
         }
 
-        // Set iis via searchParams, then manually append iisn to preserve + spacing
-        finalURL.searchParams.set('iis', iisValue);
-        return finalURL.toString() + '&iisn=' + source.replace(/ /g, '+');
+        // 3. Construct parameters
+        // We use URLSearchParams to handle structure cleanly
+        const params = new URLSearchParams();
+        params.set('mode', 'job');
+        params.set('iis', iisValue);
+
+        // 4. Build final string
+        // URLSearchParams uses %20 for spaces, but iCIMS prefers +
+        // So we replace %20 with + in the param string
+        const queryString = params.toString().replace(/%20/g, '+');
+        
+        // Append iisn manually with + for spaces
+        return `${cleanBase}?${queryString}&iisn=${source.replace(/ /g, '+')}`;
     }
 
     // Generate QR code and show modal
@@ -544,17 +558,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 );
 
                 if (jobData) {
-                    // Read utm params from the landing page URL (single declaration, no shadowing)
+                    // Read utm params from the pageParams (FIX 1: No shadowing)
                     const sourceParam = pageParams.get('utm_source') || '';
                     const mediumParam = pageParams.get('utm_medium') || '';
 
-                    // Build clean iCIMS URL with iis + iisn only
+                    // Build clean iCIMS URL
                     let finalLink = generateFinalURL(jobData["Evergreen link"], sourceParam, mediumParam);
 
-                    // Append any extra page params (e.g. custom tracking),
-                    // but NEVER leak utm_source / utm_medium / utm_campaign / lang into iCIMS
+                    // ============================================================
+                    // FIX 3: Append extra params but block UTM leakage
+                    // ============================================================
                     const blockList = ['utm_source', 'utm_medium', 'utm_campaign', 'lang'];
                     const builtURL = new URL(finalLink);
+                    
                     pageParams.forEach((value, key) => {
                         if (!blockList.includes(key) && !builtURL.searchParams.has(key)) {
                             builtURL.searchParams.set(key, value);
@@ -569,7 +585,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Page-UI language switcher (navbar dropdown items)
+        // Page-UI language switcher
         document.querySelectorAll('.dropdown-item[data-lang]').forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -597,7 +613,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Landing page buttons (e.g. JLP, MLP links in the Language-Specific Pages section)
+    // Landing page buttons
     function initLandingButtonParams() {
         document.querySelectorAll('.landing-page-btn.active').forEach(btn => {
             const rawHref = btn.getAttribute('href') || btn.href;
@@ -605,12 +621,13 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.setAttribute('data-base-url', cleanBase);
 
             btn.addEventListener('click', function(e) {
-                const source = decodeURIComponent(pageParams.get('utm_source') || '').replace(/\+/g, ' ');
                 const medium = pageParams.get('utm_medium') || '';
-
+                
                 if (medium) {
                     e.preventDefault();
+                    const source = pageParams.get('utm_source') || '';
                     const baseURL = btn.getAttribute('data-base-url');
+                    // Uses the same clean generation logic
                     const finalURL = generateFinalURL(baseURL, source, medium);
                     window.open(finalURL, '_blank');
                 }
@@ -628,3 +645,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     init();
 });
+```
