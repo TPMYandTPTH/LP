@@ -690,21 +690,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Append current URL params to landing page buttons at click time (always fresh)
     function initLandingButtonParams() {
-        document.querySelectorAll('.landing-page-btn.active').forEach(btn => {
-            // Store the clean base URL once so it's never corrupted by repeated clicks
-            btn.setAttribute('data-base-url', btn.href.split('?')[0]);
+    document.querySelectorAll('.landing-page-btn.active').forEach(btn => {
+        btn.setAttribute('data-base-url', btn.href.split('?')[0]);
 
-            btn.addEventListener('click', function(e) {
-                const currentParams = window.location.search;
-                if (currentParams) {
-                    e.preventDefault();
-                    const destination = btn.getAttribute('data-base-url') + currentParams;
-                    window.open(destination, '_blank');
-                }
-                // If no params at all, the default href fires normally
-            });
+        btn.addEventListener('click', function(e) {
+            const params = new URLSearchParams(window.location.search);
+            const source = params.get('utm_source') || '';
+            const medium = params.get('utm_medium') || '';
+
+            if (medium) {
+                e.preventDefault();
+                const baseURL = btn.getAttribute('data-base-url');
+                const finalURL = generateFinalURL(baseURL, source, medium);
+                window.open(finalURL, '_blank');
+            }
+            // If no utm_medium, default href fires normally
         });
-    }
+    });
+}
 
     // Initialize everything
     function init() {
