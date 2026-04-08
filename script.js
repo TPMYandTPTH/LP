@@ -1,14 +1,13 @@
-You are absolutely right to point out that the previous approach was "so wrong" for your specific setup. The issue was that I was treating the **Landing Page Buttons** (the JLP/MLP links in your HTML) the same way as the **Job Application Buttons** (your JSON data).
+You are right. I looked closely at the "Old JS" you pasted. It was "good" because it correctly preserved `mode=job` (since `new URL()` keeps existing params), but it was "not enough" because it was **leaking** the `utm_source`, `utm_medium`, and `utm_campaign` into the final iCIMS URL, which you don't want.
 
-1.  **Job Links (JSON):** Need `iis` and `iisn` mapping (ATS format).
-2.  **Landing Page Buttons (HTML):** Need to pass the `utm_source`, `utm_medium`, etc., as standard UTM parameters (Analytics format), **not** converted to `iis`.
+Here is the **exact fix**. I have reverted to the "Old JS" structure (which handles the URL object correctly) but added the **Blocklist Logic** to stop the leakage.
 
-Here is the **fully corrected JavaScript**. It handles your JSON job data structure perfectly (modifying the existing `mode=job` parameters) and correctly updates the Landing Page buttons to pass UTM parameters without converting them.
-
-Replace the entire contents of your `script.js` with this:
+This script does exactly two things:
+1.  **For Jobs (JSON):** Keeps `mode=job`, overwrites `iis` and `iisn`, and **blocks** `utm_*` params from appearing in the final link.
+2.  **For Landing Page Buttons (HTML):** Passes the `utm_*` params normally (no `iis` conversion).
 
 ```javascript
-// ============ Interview booking logic ============
+// ============ NEW: Interview booking logic ============
 const interviewLinks = {
     'Mandarin': 'https://outlook.office.com/book/Chinese@teleperformance.onmicrosoft.com/s/7lYQUtBQp0O-ps7TnPavzA2?ismsaljsauthenabled',
     'Cantonese': 'https://outlook.office.com/book/Chinese@teleperformance.onmicrosoft.com/s/MV4FDjJs7EeuSYmAOiz6zQ2?ismsaljsauthenabled',
@@ -29,7 +28,7 @@ function isAgentPosition(jobType) {
 function getInterviewLink(languageOption) {
     return interviewLinks[languageOption] || interviewLinks['English'];
 }
-// ============ END interview booking logic ============
+// ============ END NEW CODE ============
 
 document.addEventListener('DOMContentLoaded', function() {
     // Set current year in footer
@@ -249,27 +248,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const locationSelect = document.getElementById('location-select');
     const jobTypeSelect = document.getElementById('job-type-select');
     const generateBtn = document.getElementById('generate-btn');
+    
+    // Define urlParams ONCE at the top level
+    const urlParams = new URLSearchParams(window.location.search);
 
-    // Single source of truth for page URL params
-    const pageParams = new URLSearchParams(window.location.search);
-
-    // Get current page-UI language from URL
+    // Get current language from URL
     function getLanguageFromUrl() {
-        return pageParams.get('lang') || 'en';
+        return urlParams.get('lang') || 'en';
     }
 
     // Toggle video section based on language
     function toggleVideoSection(language) {
         const videoSection = document.getElementById('thai-video-section');
         if (videoSection) {
-            videoSection.style.display = language === 'th' ? 'block' : 'none';
+            if (language === 'th') {
+                videoSection.style.display = 'block';
+            } else {
+                videoSection.style.display = 'none';
+            }
         }
     }
 
     // Update content based on language
     function updateContent(language) {
         const langContent = languages[language] || languages['en'];
-
+        
+        // Update all elements with data-translate attribute
         document.querySelectorAll('[data-translate]').forEach(element => {
             const key = element.getAttribute('data-translate');
             if (langContent[key]) {
@@ -281,6 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        // Toggle video section visibility
         toggleVideoSection(language);
     }
 
@@ -298,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Error loading job data:', error);
                 alert(languages[getLanguageFromUrl()]?.no_job_found || 'Failed to load job data. Using default data instead.');
-                // Fallback data
+                // Fallback to default data
                 jsonData = [
                     {
                         "Positions": "Customer Service Representative",
@@ -322,14 +327,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initially populate dropdowns with all options
     function populateInitialDropdowns() {
         const currentPageLang = getLanguageFromUrl();
-
+        
+        // Clear existing options
         languageSelect.innerHTML = '<option value="" disabled selected>' + (languages[currentPageLang]?.choose_language || 'Choose your language') + '</option>';
         locationSelect.innerHTML = '<option value="" disabled selected>' + (languages[currentPageLang]?.choose_location || 'Choose your location') + '</option>';
         jobTypeSelect.innerHTML = '<option value="" disabled selected>' + (languages[currentPageLang]?.choose_job_type || 'Choose your job type') + '</option>';
 
+        // Get all unique languages and locations
         const allLanguages = [...new Set(jsonData.map(item => item.Language))];
         const allLocations = [...new Set(jsonData.map(item => item.Location))];
 
+        // Populate language dropdown
         allLanguages.forEach(lang => {
             const option = document.createElement('option');
             option.value = lang;
@@ -337,6 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
             languageSelect.appendChild(option);
         });
 
+        // Populate location dropdown
         allLocations.forEach(loc => {
             const option = document.createElement('option');
             option.value = loc;
@@ -349,12 +358,18 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateLocations() {
         const selectedLanguage = languageSelect.value;
         const currentLocation = locationSelect.value;
-
-        const filteredLocations = selectedLanguage
-            ? [...new Set(jsonData.filter(item => item.Language === selectedLanguage).map(item => item.Location))]
+        
+        // Filter locations based on selected language
+        const filteredLocations = selectedLanguage 
+            ? [...new Set(jsonData
+                .filter(item => item.Language === selectedLanguage)
+                .map(item => item.Location))]
             : [...new Set(jsonData.map(item => item.Location))];
-
+        
+        // Update location dropdown
         updateDropdown(locationSelect, filteredLocations, currentLocation);
+        
+        // Update job types based on new selections
         updateJobTypes();
     }
 
@@ -362,36 +377,46 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateLanguages() {
         const selectedLocation = locationSelect.value;
         const currentLanguage = languageSelect.value;
-
-        const filteredLanguages = selectedLocation
-            ? [...new Set(jsonData.filter(item => item.Location === selectedLocation).map(item => item.Language))]
+        
+        // Filter languages based on selected location
+        const filteredLanguages = selectedLocation 
+            ? [...new Set(jsonData
+                .filter(item => item.Location === selectedLocation)
+                .map(item => item.Language))]
             : [...new Set(jsonData.map(item => item.Language))];
-
+        
+        // Update language dropdown
         updateDropdown(languageSelect, filteredLanguages, currentLanguage);
+        
+        // Update job types based on new selections
         updateJobTypes();
     }
 
-    // Helper: update a dropdown while preserving current selection if possible
+    // Helper function to update a dropdown while preserving current selection if possible
     function updateDropdown(dropdown, options, currentValue) {
         const currentPageLang = getLanguageFromUrl();
+        const currentSelected = dropdown.value;
         dropdown.innerHTML = '';
-
+        
+        // Add default option
         const defaultOption = document.createElement('option');
         defaultOption.value = '';
         defaultOption.disabled = true;
         defaultOption.selected = true;
-        defaultOption.textContent = dropdown.id === 'language-select'
+        defaultOption.textContent = dropdown.id === 'language-select' 
             ? (languages[currentPageLang]?.choose_language || 'Choose your language')
             : (languages[currentPageLang]?.choose_location || 'Choose your location');
         dropdown.appendChild(defaultOption);
-
+        
+        // Add all options
         options.forEach(option => {
             const opt = document.createElement('option');
             opt.value = option;
             opt.textContent = option;
             dropdown.appendChild(opt);
         });
-
+        
+        // Restore previous selection if it still exists
         if (options.includes(currentValue)) {
             dropdown.value = currentValue;
         }
@@ -402,17 +427,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedLanguage = languageSelect.value;
         const selectedLocation = locationSelect.value;
         const currentPageLang = getLanguageFromUrl();
-
+        
+        // Clear existing options
         jobTypeSelect.innerHTML = '<option value="" disabled selected>' + (languages[currentPageLang]?.choose_job_type || 'Choose your job type') + '</option>';
-
+        
         if (selectedLanguage && selectedLocation) {
-            const filteredJobs = jsonData.filter(item =>
-                item.Language === selectedLanguage &&
+            // Filter jobs based on selections
+            const filteredJobs = jsonData.filter(item => 
+                item.Language === selectedLanguage && 
                 item.Location === selectedLocation
             );
-
+            
+            // Get unique job types
             const jobTypes = [...new Set(filteredJobs.map(item => item.Positions))];
-
+            
+            // Populate job types dropdown
             jobTypes.forEach(job => {
                 const option = document.createElement('option');
                 option.value = job;
@@ -422,65 +451,83 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ============================================================
-    // CORRECTED: Generate iCIMS URL for JSON Job Data
-    // - Uses URL object to modify existing params (preserves mode=job)
-    // - Maps utm_medium to iis
-    // - Ensures + encoding for iisn
-    // ============================================================
+    // Generate final URL with UTM parameters
     function generateFinalURL(baseURL, source, medium) {
-        try {
-            // Parse the URL from JSON (e.g. .../job?mode=job&iis=LandingPage&iisn=)
-            let finalURL = new URL(baseURL);
+        // 1. Use URL object to preserve existing valid params like 'mode=job'
+        let finalURL = new URL(baseURL);
+        let iisValue;
 
-            let iisValue;
-
-            // Map utm_medium to iCIMS 'iis'
-            switch (medium.toLowerCase()) {
-                case 'tpmy':       iisValue = "TPMY Website";      break;
-                case 'digitalm':   iisValue = "Digital Marketing"; break;
-                case 'social':     iisValue = "Social Media";      break;
-                case 'career':     iisValue = "Career Fair";       break;
-                case 'digital':    iisValue = "Digital Ad";        break;
-                case 'mobile':     iisValue = "Mobile Stand";      break;
-                case 'university': iisValue = "University";        break;
-                case 'poster':     iisValue = "Poster";            break;
-                case 'flyers':     iisValue = "Flyers";            break;
-                case 'physical':   iisValue = "Physical QR";       break;
-                case 'fotg':       iisValue = "FoTG";              break;
-                case 'banner1':    iisValue = "Banner 1";          break;
-                case 'banner2':    iisValue = "Banner 2";          break;
-                case 'email':      iisValue = "Email Blast";       break;
-                case 'public':     iisValue = "Public Stands";     break;
-                case 'grab':       iisValue = "Grab";              break;
-                case 'linkedin':   iisValue = "LinkedIn Recruiter"; break;
-                case 'broadcast':  iisValue = "Broadcast Comms";   break;
-                default:
-                    console.error("Unknown utm_medium:", medium);
-                    // Fallback: keep base URL without params if mapping fails
-                    return baseURL.split('?')[0];
-            }
-
-            // Update parameters
-            // This keeps mode=job from the JSON, updates iis, and sets iisn
-            finalURL.searchParams.set('iis', iisValue);
-            finalURL.searchParams.set('iisn', source); // Set temporarily to encode properly
-
-            // Convert to string and fix encoding for iisn (+ instead of %20)
-            let urlString = finalURL.toString();
-            
-            // Fix spacing encoding: %20 -> +
-            // URL object encodes spaces as %20, we want + for iCIMS convention
-            urlString = urlString.replace(/iisn=([^&]*)/, (match, p1) => {
-                 return 'iisn=' + decodeURIComponent(p1).replace(/ /g, '+');
-            });
-
-            return urlString;
-
-        } catch (e) {
-            console.error("Error generating URL", e);
-            return baseURL;
+        // 2. Determine iis value based on utm_medium
+        // Normalise to lowercase so casing in the URL never matters
+        switch (medium.toLowerCase()) {
+            case 'tpmy':
+                iisValue = "TPMY Website";
+                break;
+            case 'digitalm':
+                iisValue = "Digital Marketing";
+                break;
+            case 'social':
+                iisValue = "Social Media";
+                break;
+            case 'career':
+                iisValue = "Career Fair";
+                break;
+            case 'digital':
+                iisValue = "Digital Ad";
+                break;
+            case 'mobile':
+                iisValue = "Mobile Stand";
+                break;
+            case 'university':
+                iisValue = "University";
+                break;
+            case 'poster':
+                iisValue = "Poster";
+                break;
+            case 'flyers':
+                iisValue = "Flyers";
+                break;
+            case 'physical':
+                iisValue = "Physical QR";
+                break;
+            case 'fotg':
+                iisValue = "FoTG";
+                break;
+            case 'banner1':
+                iisValue = "Banner 1";
+                break;
+            case 'banner2':
+                iisValue = "Banner 2";
+                break;
+            case 'email':
+                iisValue = "Email Blast";
+                break;
+            case 'public':
+                iisValue = "Public Stands";
+                break;
+            case 'grab':
+                iisValue = "Grab";
+                break;
+            case 'linkedin':
+                iisValue = "LinkedIn Recruiter";
+                break;
+            case 'broadcast':
+                iisValue = "Broadcast Comms";
+                break;
+            default:
+                console.error("Unknown utm_medium:", medium);
+                return baseURL.split('?')[0]; // Fallback to clean base
         }
+
+        // 3. Set iis and iisn
+        finalURL.searchParams.set('iis', iisValue);
+        
+        // Manually append iisn to ensure spaces become + and not %20
+        // We delete it from searchParams first to avoid duplication
+        finalURL.searchParams.delete('iisn');
+        
+        // Return string with manual iisn append
+        return finalURL.toString() + '&iisn=' + source.replace(/ /g, '+');
     }
 
     // Generate QR code and show modal
@@ -492,32 +539,38 @@ document.addEventListener('DOMContentLoaded', function() {
             background: 'white',
             foreground: 'black'
         });
-
+        
         const jobUrlElement = document.getElementById('job-url');
         jobUrlElement.href = url;
         jobUrlElement.textContent = url;
-
+        
+        // Check if this is an agent position and show/hide interview step
         const interviewStep = document.getElementById('interview-step');
         if (isAgentPosition(selectedJob)) {
             interviewStep.style.display = 'block';
+            const interviewUrl = getInterviewLink(selectedLanguage);
             const interviewUrlElement = document.getElementById('interview-url');
-            interviewUrlElement.href = getInterviewLink(selectedLanguage);
+            interviewUrlElement.href = interviewUrl;
         } else {
             interviewStep.style.display = 'none';
         }
-
+        
         const qrModal = new bootstrap.Modal(document.getElementById('qrModal'));
         qrModal.show();
-
+        
+        // Add QR expand functionality
         const qrCanvas = document.getElementById('qr-code');
         qrCanvas.onclick = function() {
-            new QRious({
+            // Create expanded QR code
+            const expandedQR = new QRious({
                 element: document.getElementById('qr-code-expanded'),
                 value: url,
                 size: 400,
                 background: 'white',
                 foreground: 'black'
             });
+            
+            // Show expanded modal
             const expandModal = new bootstrap.Modal(document.getElementById('qrExpandedModal'));
             expandModal.show();
         };
@@ -525,34 +578,54 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize event listeners
     function initEventListeners() {
-        languageSelect.addEventListener('change', updateLocations);
+        // Language dropdown change - ONLY update locations, NOT page language
+        languageSelect.addEventListener('change', function() {
+            updateLocations();
+        });
+
+        // Location dropdown change - update languages
         locationSelect.addEventListener('change', updateLanguages);
 
+        // Generate QR button click
         if (generateBtn) {
             generateBtn.addEventListener('click', function() {
                 const selectedLanguage = languageSelect.value;
                 const selectedLocation = locationSelect.value;
                 const selectedJob = jobTypeSelect.value;
                 const currentPageLang = getLanguageFromUrl();
-
+                
                 if (!selectedLanguage || !selectedLocation || !selectedJob) {
                     alert(languages[currentPageLang]?.select_all_options || 'Please select all options');
                     return;
                 }
-
-                const jobData = jsonData.find(item =>
-                    item.Language === selectedLanguage &&
-                    item.Location === selectedLocation &&
+                
+                const jobData = jsonData.find(item => 
+                    item.Language === selectedLanguage && 
+                    item.Location === selectedLocation && 
                     item.Positions === selectedJob
                 );
-
+                
                 if (jobData) {
-                    // Get parameters from the main page URL
-                    const sourceParam = pageParams.get('utm_source') || '';
-                    const mediumParam = pageParams.get('utm_medium') || '';
+                    // Use the top-level urlParams
+                    const sourceParam = urlParams.get('utm_source') || '';
+                    const mediumParam = urlParams.get('utm_medium') || '';
 
-                    // Build the specific iCIMS link
+                    // Build the iCIMS link (iis + iisn from utm_source + utm_medium)
                     let finalLink = generateFinalURL(jobData["Evergreen link"], sourceParam, mediumParam);
+
+                    // ============================================================
+                    // FIX: Append extra params but BLOCK utm_source / utm_medium / campaign
+                    // ============================================================
+                    const finalURL = new URL(finalLink);
+                    const blockList = ['utm_source', 'utm_medium', 'utm_campaign', 'lang'];
+                    
+                    urlParams.forEach((value, key) => {
+                        // Only append if NOT in blocklist and NOT already in the URL
+                        if (!blockList.includes(key) && !finalURL.searchParams.has(key)) {
+                            finalURL.searchParams.set(key, value);
+                        }
+                    });
+                    finalLink = finalURL.toString();
 
                     openQrModal(finalLink, selectedLanguage, selectedJob);
                 } else {
@@ -561,16 +634,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Page-UI language switcher
+        // Language selector dropdown items (for PAGE language)
         document.querySelectorAll('.dropdown-item[data-lang]').forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
                 const selectedLanguage = this.getAttribute('data-lang');
                 updateContent(selectedLanguage);
-
-                pageParams.set('lang', selectedLanguage);
-                window.history.replaceState(null, '', `${window.location.pathname}?${pageParams.toString()}`);
-
+                
+                urlParams.set('lang', selectedLanguage);
+                window.history.replaceState(null, '', `${window.location.pathname}?${urlParams.toString()}`);
+                
                 populateInitialDropdowns();
             });
         });
@@ -589,40 +662,32 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ============================================================
-    // CORRECTED: Landing Page Buttons Initialization
-    // - Simply updates the href attributes to pass UTMs
-    // - Does NOT convert to iis/iisn (unlike the Job Buttons)
-    // ============================================================
     function initLandingButtonParams() {
         document.querySelectorAll('.landing-page-btn.active').forEach(btn => {
-            // Get the base URL from the existing href
-            const rawHref = btn.getAttribute('href');
-            if (!rawHref) return;
+            // Use getAttribute to get raw href, then strip params
+            const rawHref = btn.getAttribute('href') || btn.href;
+            const cleanBase = rawHref.split('?')[0];
+            btn.setAttribute('data-base-url', cleanBase);
 
-            try {
-                // Parse the URL
-                let targetURL = new URL(rawHref, window.location.origin);
-
-                // Propagate UTM parameters from the current page URL
-                const paramsToPass = ['utm_source', 'utm_medium', 'utm_campaign'];
-                
-                paramsToPass.forEach(param => {
-                    if (pageParams.has(param)) {
-                        targetURL.searchParams.set(param, pageParams.get(param));
-                    }
-                });
-
-                // Update the href attribute in the DOM
-                btn.href = targetURL.toString();
-
-            } catch(e) {
-                console.error("Invalid URL on landing button", rawHref);
+            // Logic: For Landing Page buttons, we simply pass the UTM parameters.
+            // We do NOT convert them to iis/iisn because these link to other pages, not iCIMS.
+            const params = new URLSearchParams();
+            const source = urlParams.get('utm_source');
+            const medium = urlParams.get('utm_medium');
+            const campaign = urlParams.get('utm_campaign');
+            
+            if (source) params.set('utm_source', source);
+            if (medium) params.set('utm_medium', medium);
+            if (campaign) params.set('utm_campaign', campaign);
+            
+            // Update the href with the new parameters
+            if(params.toString()) {
+                btn.href = cleanBase + '?' + params.toString();
             }
         });
     }
 
-    // Boot
+    // Initialize everything
     function init() {
         updateContent(getLanguageFromUrl());
         loadJobData();
