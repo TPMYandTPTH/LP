@@ -550,7 +550,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             default:
                 console.error("Unknown utm_medium:", medium);
-                return baseURL;
+                return baseURL.split('?')[0];
         }
 
       // Only set mode and iis via searchParams
