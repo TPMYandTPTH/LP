@@ -1,4 +1,11 @@
-Here is the full, corrected JavaScript code. I have updated the `generateFinalURL` function to explicitly include `mode=job` and ensure spaces are formatted as `+` signs to match your target URL structure exactly.
+You are absolutely right to point out that the previous approach was "so wrong" for your specific setup. The issue was that I was treating the **Landing Page Buttons** (the JLP/MLP links in your HTML) the same way as the **Job Application Buttons** (your JSON data).
+
+1.  **Job Links (JSON):** Need `iis` and `iisn` mapping (ATS format).
+2.  **Landing Page Buttons (HTML):** Need to pass the `utm_source`, `utm_medium`, etc., as standard UTM parameters (Analytics format), **not** converted to `iis`.
+
+Here is the **fully corrected JavaScript**. It handles your JSON job data structure perfectly (modifying the existing `mode=job` parameters) and correctly updates the Landing Page buttons to pass UTM parameters without converting them.
+
+Replace the entire contents of your `script.js` with this:
 
 ```javascript
 // ============ Interview booking logic ============
@@ -243,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const jobTypeSelect = document.getElementById('job-type-select');
     const generateBtn = document.getElementById('generate-btn');
 
-    // Single source of truth for page URL params — never re-declared
+    // Single source of truth for page URL params
     const pageParams = new URLSearchParams(window.location.search);
 
     // Get current page-UI language from URL
@@ -291,48 +298,21 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Error loading job data:', error);
                 alert(languages[getLanguageFromUrl()]?.no_job_found || 'Failed to load job data. Using default data instead.');
+                // Fallback data
                 jsonData = [
                     {
-                        "Positions": "Customer Success Specialist",
+                        "Positions": "Customer Service Representative",
+                        "Language": "Japanese",
+                        "Location": "Kuala Lumpur",
+                        "Evergreen title": "Customer Service Representative - Japanese - Kuala Lumpur",
+                        "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49026/customer-service-representative---japanese-support---reservation-project/job?mode=job&iis=LandingPage&iisn="
+                    },
+                    {
+                        "Positions": "Customer Service Representative",
                         "Language": "Japanese",
                         "Location": "Penang",
-                        "Evergreen title": "Customer Success Specialist - Japanese - Penang",
-                        "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49421/customer-success-specialist---japanese---penang/job"
-                    },
-                    {
-                        "Positions": "Customer Success Specialist",
-                        "Language": "Korean",
-                        "Location": "Penang",
-                        "Evergreen title": "Customer Success Specialist - Korean - Penang",
-                        "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49422/customer-success-specialist---korean---penang/job"
-                    },
-                    {
-                        "Positions": "Customer Service Representative",
-                        "Language": "English",
-                        "Location": "Kuala Lumpur",
-                        "Evergreen title": "Customer Service Representative - English - KL",
-                        "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49423/customer-service-representative---english---kl/job"
-                    },
-                    {
-                        "Positions": "Technical Support Specialist",
-                        "Language": "Mandarin",
-                        "Location": "Penang",
-                        "Evergreen title": "Technical Support Specialist - Mandarin - Penang",
-                        "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49424/technical-support-specialist---mandarin---penang/job"
-                    },
-                    {
-                        "Positions": "Customer Service Representative",
-                        "Language": "Thai",
-                        "Location": "Bangkok",
-                        "Evergreen title": "Customer Service Representative - Thai - Bangkok",
-                        "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49425/customer-service-representative---thai---bangkok/job"
-                    },
-                    {
-                        "Positions": "Sales Consultant",
-                        "Language": "Malay",
-                        "Location": "Kuala Lumpur",
-                        "Evergreen title": "Sales Consultant - Malay - KL",
-                        "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49426/sales-consultant---malay---kl/job"
+                        "Evergreen title": "Customer Service Representative - Japanese - Penang",
+                        "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49421/customer-success-specialist---japanese---penang/job?mode=job&iis=LandingPage&iisn="
                     }
                 ];
                 populateInitialDropdowns();
@@ -443,55 +423,64 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ============================================================
-    // CORRECTED: Generate final iCIMS URL
-    // - Adds mode=job
-    // - Uses + instead of %20 for spaces
-    // - Strips old params from data.json
+    // CORRECTED: Generate iCIMS URL for JSON Job Data
+    // - Uses URL object to modify existing params (preserves mode=job)
+    // - Maps utm_medium to iis
+    // - Ensures + encoding for iisn
     // ============================================================
     function generateFinalURL(baseURL, source, medium) {
-        // 1. Strip existing query params to remove hardcoded junk
-        const cleanBase = baseURL.split('?')[0];
+        try {
+            // Parse the URL from JSON (e.g. .../job?mode=job&iis=LandingPage&iisn=)
+            let finalURL = new URL(baseURL);
 
-        let iisValue;
+            let iisValue;
 
-        // 2. Map utm_medium to iCIMS 'iis'
-        switch (medium.toLowerCase()) {
-            case 'tpmy':       iisValue = "TPMY Website";      break;
-            case 'digitalm':   iisValue = "Digital Marketing"; break;
-            case 'social':     iisValue = "Social Media";      break;
-            case 'career':     iisValue = "Career Fair";       break;
-            case 'digital':    iisValue = "Digital Ad";        break;
-            case 'mobile':     iisValue = "Mobile Stand";      break;
-            case 'university': iisValue = "University";        break;
-            case 'poster':     iisValue = "Poster";            break;
-            case 'flyers':     iisValue = "Flyers";            break;
-            case 'physical':   iisValue = "Physical QR";       break;
-            case 'fotg':       iisValue = "FoTG";              break;
-            case 'banner1':    iisValue = "Banner 1";          break;
-            case 'banner2':    iisValue = "Banner 2";          break;
-            case 'email':      iisValue = "Email Blast";       break;
-            case 'public':     iisValue = "Public Stands";     break;
-            case 'grab':       iisValue = "Grab";              break;
-            case 'linkedin':   iisValue = "LinkedIn Recruiter"; break;
-            case 'broadcast':  iisValue = "Broadcast Comms";   break;
-            default:
-                console.error("Unknown utm_medium:", medium);
-                return cleanBase;
+            // Map utm_medium to iCIMS 'iis'
+            switch (medium.toLowerCase()) {
+                case 'tpmy':       iisValue = "TPMY Website";      break;
+                case 'digitalm':   iisValue = "Digital Marketing"; break;
+                case 'social':     iisValue = "Social Media";      break;
+                case 'career':     iisValue = "Career Fair";       break;
+                case 'digital':    iisValue = "Digital Ad";        break;
+                case 'mobile':     iisValue = "Mobile Stand";      break;
+                case 'university': iisValue = "University";        break;
+                case 'poster':     iisValue = "Poster";            break;
+                case 'flyers':     iisValue = "Flyers";            break;
+                case 'physical':   iisValue = "Physical QR";       break;
+                case 'fotg':       iisValue = "FoTG";              break;
+                case 'banner1':    iisValue = "Banner 1";          break;
+                case 'banner2':    iisValue = "Banner 2";          break;
+                case 'email':      iisValue = "Email Blast";       break;
+                case 'public':     iisValue = "Public Stands";     break;
+                case 'grab':       iisValue = "Grab";              break;
+                case 'linkedin':   iisValue = "LinkedIn Recruiter"; break;
+                case 'broadcast':  iisValue = "Broadcast Comms";   break;
+                default:
+                    console.error("Unknown utm_medium:", medium);
+                    // Fallback: keep base URL without params if mapping fails
+                    return baseURL.split('?')[0];
+            }
+
+            // Update parameters
+            // This keeps mode=job from the JSON, updates iis, and sets iisn
+            finalURL.searchParams.set('iis', iisValue);
+            finalURL.searchParams.set('iisn', source); // Set temporarily to encode properly
+
+            // Convert to string and fix encoding for iisn (+ instead of %20)
+            let urlString = finalURL.toString();
+            
+            // Fix spacing encoding: %20 -> +
+            // URL object encodes spaces as %20, we want + for iCIMS convention
+            urlString = urlString.replace(/iisn=([^&]*)/, (match, p1) => {
+                 return 'iisn=' + decodeURIComponent(p1).replace(/ /g, '+');
+            });
+
+            return urlString;
+
+        } catch (e) {
+            console.error("Error generating URL", e);
+            return baseURL;
         }
-
-        // 3. Construct parameters
-        // We use URLSearchParams to handle structure cleanly
-        const params = new URLSearchParams();
-        params.set('mode', 'job');
-        params.set('iis', iisValue);
-
-        // 4. Build final string
-        // URLSearchParams uses %20 for spaces, but iCIMS prefers +
-        // So we replace %20 with + in the param string
-        const queryString = params.toString().replace(/%20/g, '+');
-        
-        // Append iisn manually with + for spaces
-        return `${cleanBase}?${queryString}&iisn=${source.replace(/ /g, '+')}`;
     }
 
     // Generate QR code and show modal
@@ -558,25 +547,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 );
 
                 if (jobData) {
-                    // Read utm params from the pageParams (FIX 1: No shadowing)
+                    // Get parameters from the main page URL
                     const sourceParam = pageParams.get('utm_source') || '';
                     const mediumParam = pageParams.get('utm_medium') || '';
 
-                    // Build clean iCIMS URL
+                    // Build the specific iCIMS link
                     let finalLink = generateFinalURL(jobData["Evergreen link"], sourceParam, mediumParam);
-
-                    // ============================================================
-                    // FIX 3: Append extra params but block UTM leakage
-                    // ============================================================
-                    const blockList = ['utm_source', 'utm_medium', 'utm_campaign', 'lang'];
-                    const builtURL = new URL(finalLink);
-                    
-                    pageParams.forEach((value, key) => {
-                        if (!blockList.includes(key) && !builtURL.searchParams.has(key)) {
-                            builtURL.searchParams.set(key, value);
-                        }
-                    });
-                    finalLink = builtURL.toString();
 
                     openQrModal(finalLink, selectedLanguage, selectedJob);
                 } else {
@@ -613,25 +589,36 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Landing page buttons
+    // ============================================================
+    // CORRECTED: Landing Page Buttons Initialization
+    // - Simply updates the href attributes to pass UTMs
+    // - Does NOT convert to iis/iisn (unlike the Job Buttons)
+    // ============================================================
     function initLandingButtonParams() {
         document.querySelectorAll('.landing-page-btn.active').forEach(btn => {
-            const rawHref = btn.getAttribute('href') || btn.href;
-            const cleanBase = rawHref.split('?')[0];
-            btn.setAttribute('data-base-url', cleanBase);
+            // Get the base URL from the existing href
+            const rawHref = btn.getAttribute('href');
+            if (!rawHref) return;
 
-            btn.addEventListener('click', function(e) {
-                const medium = pageParams.get('utm_medium') || '';
+            try {
+                // Parse the URL
+                let targetURL = new URL(rawHref, window.location.origin);
+
+                // Propagate UTM parameters from the current page URL
+                const paramsToPass = ['utm_source', 'utm_medium', 'utm_campaign'];
                 
-                if (medium) {
-                    e.preventDefault();
-                    const source = pageParams.get('utm_source') || '';
-                    const baseURL = btn.getAttribute('data-base-url');
-                    // Uses the same clean generation logic
-                    const finalURL = generateFinalURL(baseURL, source, medium);
-                    window.open(finalURL, '_blank');
-                }
-            });
+                paramsToPass.forEach(param => {
+                    if (pageParams.has(param)) {
+                        targetURL.searchParams.set(param, pageParams.get(param));
+                    }
+                });
+
+                // Update the href attribute in the DOM
+                btn.href = targetURL.toString();
+
+            } catch(e) {
+                console.error("Invalid URL on landing button", rawHref);
+            }
         });
     }
 
