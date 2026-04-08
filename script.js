@@ -553,9 +553,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 return baseURL;
         }
 
-        finalURL.searchParams.set('mode', 'job');
-        finalURL.searchParams.set('iis', encodeURIComponent(iisValue).replace(/%20/g, '+'));
-        finalURL.searchParams.set('iisn', encodeURIComponent(iisnValue).replace(/%2B/g, '+'));
+        // Let URLSearchParams handle all encoding cleanly
+    finalURL.searchParams.set('mode', 'job');
+    finalURL.searchParams.set('iis', iisValue);
+    finalURL.searchParams.set('iisn', source);
+
+    return finalURL.toString();
 
         return decodeURIComponent(finalURL.toString());
     }
