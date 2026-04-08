@@ -688,9 +688,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-   function initLandingButtonParams() {
+ function initLandingButtonParams() {
     document.querySelectorAll('.landing-page-btn.active').forEach(btn => {
-        btn.setAttribute('data-base-url', btn.href.split('?')[0]);
+        // Use getAttribute to get raw href, then strip params
+        const rawHref = btn.getAttribute('href') || btn.href;
+        const cleanBase = rawHref.split('?')[0];
+        btn.setAttribute('data-base-url', cleanBase);
 
         btn.addEventListener('click', function(e) {
             const params = new URLSearchParams(window.location.search);
