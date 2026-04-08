@@ -1,12 +1,3 @@
-You are right. I looked closely at the "Old JS" you pasted. It was "good" because it correctly preserved `mode=job` (since `new URL()` keeps existing params), but it was "not enough" because it was **leaking** the `utm_source`, `utm_medium`, and `utm_campaign` into the final iCIMS URL, which you don't want.
-
-Here is the **exact fix**. I have reverted to the "Old JS" structure (which handles the URL object correctly) but added the **Blocklist Logic** to stop the leakage.
-
-This script does exactly two things:
-1.  **For Jobs (JSON):** Keeps `mode=job`, overwrites `iis` and `iisn`, and **blocks** `utm_*` params from appearing in the final link.
-2.  **For Landing Page Buttons (HTML):** Passes the `utm_*` params normally (no `iis` conversion).
-
-```javascript
 // ============ NEW: Interview booking logic ============
 const interviewLinks = {
     'Mandarin': 'https://outlook.office.com/book/Chinese@teleperformance.onmicrosoft.com/s/7lYQUtBQp0O-ps7TnPavzA2?ismsaljsauthenabled',
@@ -697,4 +688,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     init();
 });
-```
+
