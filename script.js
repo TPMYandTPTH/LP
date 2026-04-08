@@ -476,6 +476,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Normalise to lowercase so casing in the URL never matters
         // e.g. "LinkedIn", "linkedin", "LINKEDIN" all work
         switch (medium.toLowerCase()) {
+            case 'tpmy':
+                iisValue = "TPMY Website";
+                iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
+                break;
+            case 'digitalm':
+                iisValue = "Digital Marketing";
+                iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
+                break;
             case 'social':
                 iisValue = "Social Media";
                 iisnValue = encodeURIComponent(source).replace(/%2B/g, '+');
