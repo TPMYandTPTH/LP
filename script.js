@@ -553,14 +553,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 return baseURL;
         }
 
-        // Let URLSearchParams handle all encoding cleanly
+    // Remove any stale UTM/tracking params from the base URL
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(p => 
+        finalURL.searchParams.delete(p)
+    );
+
+    // Set mode and iis (spaces → + is fine here)
     finalURL.searchParams.set('mode', 'job');
     finalURL.searchParams.set('iis', iisValue);
-    finalURL.searchParams.set('iisn', source);
 
-    return finalURL.toString();
-
-        return decodeURIComponent(finalURL.toString());
+    // Build the final string and replace %2B → + throughout
+    // URLSearchParams encodes spaces as + but encodes literal + as %2B,
+    // so we restore %2B back to + to match iCIMS's expected format
+    return finalURL.toString() + '&iisn=' + source.replace(/ /g, '+');
     }
 
     // Generate QR code and show modal
@@ -691,14 +696,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Append current URL params to landing page buttons at click time (always fresh)
-    function initLandingButtonParams() {
+   function initLandingButtonParams() {
     document.querySelectorAll('.landing-page-btn.active').forEach(btn => {
         btn.setAttribute('data-base-url', btn.href.split('?')[0]);
 
         btn.addEventListener('click', function(e) {
             const params = new URLSearchParams(window.location.search);
-            const source = params.get('utm_source') || '';
+            const source = decodeURIComponent(params.get('utm_source') || '').replace(/\+/g, ' ');
             const medium = params.get('utm_medium') || '';
 
             if (medium) {
@@ -707,7 +711,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const finalURL = generateFinalURL(baseURL, source, medium);
                 window.open(finalURL, '_blank');
             }
-            // If no utm_medium, default href fires normally
         });
     });
 }
