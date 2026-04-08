@@ -553,21 +553,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 return baseURL;
         }
 
-    // Remove any stale UTM/tracking params from the base URL
-    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(p => 
-        finalURL.searchParams.delete(p)
-    );
-
-    // Set mode and iis (spaces → + is fine here)
+      // Only set mode and iis via searchParams
     finalURL.searchParams.set('mode', 'job');
     finalURL.searchParams.set('iis', iisValue);
 
-    // Build the final string and replace %2B → + throughout
-    // URLSearchParams encodes spaces as + but encodes literal + as %2B,
-    // so we restore %2B back to + to match iCIMS's expected format
+    // Manually append iisn to avoid URLSearchParams encoding + as %2B
     return finalURL.toString() + '&iisn=' + source.replace(/ /g, '+');
-    }
-
+}
     // Generate QR code and show modal
     function openQrModal(url, selectedLanguage, selectedJob) {
         const qr = new QRious({
