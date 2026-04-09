@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const iisEncoded  = iisValue.replace(/ /g, '+');
         const iisnEncoded = source.replace(/ /g, '+');
 
-        return cleanBase + '?iis=' + iisEncoded + '&iisn=' + iisnEncoded;
+        return cleanBase + '?mode=job&iis=' + iisEncoded + '&iisn=' + iisnEncoded;
     }
 
     // Generate QR code and show modal
