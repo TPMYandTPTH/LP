@@ -134,13 +134,6 @@
   },
   {
    "Positions": "Anti-Money-Laundering (AML)",
-   "Language": "Korean",
-   "Location": "Kuala Lumpur",
-   "Evergreen title": "Anti-Money-Laundering (AML) - Korean - Kuala Lumpur",
-   "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49470/anti-money-laundering-%28aml%29---korean---kl/job?mode=job&iis=LandingPage&iisn="
-  },
-  {
-   "Positions": "Anti-Money-Laundering (AML)",
    "Language": "Thai",
    "Location": "Kuala Lumpur",
    "Evergreen title": "Anti-Money-Laundering (AML) - Thai - Kuala Lumpur",
@@ -626,8 +619,8 @@
   {
     "Positions": "Interpreter",
     "Language": "Khmer",
-    "Location": "WFH",
-    "Evergreen title": "Interpreter - Khmer - WFH",
+   "Location": "Work From Home",
+    "Evergreen title": "Interpreter - Khmer - Work From Home",
     "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49603/interpreter---khmer---work-from-home/job?mode=job&iis=LandingPage&iisn="
   },
   {
@@ -636,13 +629,6 @@
     "Location": "Penang",
     "Evergreen title": "Content Moderator - Bengali - Penang",
     "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/51083/content-moderator---bengali---penang/job?mode=job&iis=LandingPage&iisn="
-  },
-  {
-   "Positions": "Customer Success Specialist KL (G tower)",
-   "Language": "English",
-    "Location": "Kuala Lumpur",
-    "Evergreen title": "Customer Success Specialist - English - Kuala Lumpur (G tower)",
-    "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/78569/customer-success-specialist---english---kl/job?mode=job&iis=LandingPage&iisn="
   },
   { 
    "Positions": "Customer Success Specialist (Hotel Reservation)",
@@ -662,7 +648,7 @@
    "Positions": "Customer Success Specialist (Video Hosting)(One Precinct)",
    "Language": "Mandarin",
    "Location": "Penang",
-   "Evergreen title": "Customer Success Specialist (Video Hosting ) - Mandarin - One Precinct, Penang",
+   "Evergreen title": "Customer Success Specialist (Video Hosting) - Mandarin - One Precinct, Penang",
    "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/78570/customer-success-specialist-%28video-hosting-%29---mandarin---one-precinct%2c-penang/job?mode=job&iis=LandingPage&iisn="
   },
   {
@@ -687,11 +673,18 @@
    "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/78542/assistant-operation-manager-%28customer-service%29---japanese-speaking/job?mode=job&iis=LandingPage&iisn="
   },  
   {    
-   "Positions": "Customer Service Team Leader",
+   "Positions": "Team Leader Customer Service",
    "Language": "Japanese",
    "Location": "Bangkok",
-   "Evergreen title": "Customer Service Team Leader - Japanese - Bangkok",
+   "Evergreen title": "Team Leader Customer Service - Japanese - Bangkok",
    "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/73450/customer-service-team-lead---japanese/job?mode=job&iis=LandingPage&iisn="
+  },
+  {    
+   "Positions": "Trainer - Japanese Speaking",
+   "Language": "Japanese",
+   "Location": "Bangkok",
+   "Evergreen title": "Trainer - Japanese - Bangkok",
+   "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/78538/trainer---japanese-speaking/job?mode=job&iis=LandingPage&iisn="
   },
   {    
    "Positions": "Quality Analyst",
@@ -819,5 +812,82 @@
    "Location": "Kuala Lumpur",
    "Evergreen title": "Customer Success Representative - English  - Kuala Lumpur",
    "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49254/customer-service-representative---english---%28hotel-reservation%29/job?mode=job&iis=LandingPage&iisn="
+  },
+  {
+   "Positions": "Customer Service Representative - Mandarin (Fintech)- Normal Working Hours",
+   "Language": "Mandarin",
+   "Location": "Kuala Lumpur",
+   "Evergreen title": "Customer Service Representative - Mandarin Speaking (Fintech)- Normal Working Hours - Kuala Lumpur",
+   "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/87349/customer-service-representative---mandarin-speaking-%28fintech%29--normal-working-hour/job?mode=job&iis=LandingPage&iisn="
+  },
+  {
+   "Positions": "Team Lead",
+   "Language": "Mandarin",
+   "Location": "Kuala Lumpur",
+   "Evergreen title": "Team Lead - Mandarin  - Kuala Lumpur",
+   "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/84590/team-lead---mandarin---kuala-lumpur/job?mode=job&iis=LandingPage&iisn="
+  },
+  {
+   "Positions": "Interpreter",
+   "Language": "Arabic",
+   "Location": "Work From Home",
+   "Evergreen title": "Interpreter - Arabic - Work-From-Home",
+   "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49559/interpreter---arabic---work-from-home/job?mode=job&iis=LandingPage&iisn="
+  },
+  {
+   "Positions": "Customer Success Specialist",
+   "Language": "Malay",
+   "Location": "Penang",
+   "Evergreen title": "Customer Success Specialist - Bahasa Malay - Penang",
+   "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/80982/customer-success-specialist---malay----penang/job?mode=job&iis=LandingPage&iisn="
+  },
+  {
+   "Positions": "Customer Success Specialist",
+   "Language": "Taiwanese",
+   "Location": "Penang",
+   "Evergreen title": "Customer Success Specialist - Native Taiwanese - Penang",
+   "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/37229/customer-success-specialist---native-taiwanese/job?mode=job&iis=LandingPage&iisn="
+  },
+  {
+   "Positions": "Customer Success Specialist - Near Native/fluent",
+   "Language": "Taiwanese",
+   "Location": "Penang",
+   "Evergreen title": "Customer Success Specialist - Near Native Taiwanese - Penang",
+   "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49442/customer-success-specialist----near-native-taiwanese-%28-penang%29/job?mode=job&iis=LandingPage&iisn="
+  },
+  {
+   "Positions": "Consumer care expert (Pet food project)",
+   "Language": "Mandarin",
+   "Location": "Penang",
+   "Evergreen title": "Consumer Care Expert - Mandarin - Penang",
+   "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/88031/consumer-care-expert---mandarin-%28penang%29/job?mode=job&iis=LandingPage&iisn="
+  },
+  {
+   "Positions": "Customer Service Representative (Open to Thai nationals with excellent Burmese skills only)",
+   "Language": "Burmese",
+   "Location": "Bangkok",
+   "Evergreen title": "Customer Service Representative (Open to Thai nationals with excellent Burmese skills only) - Burmese - Bangkok",
+   "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/84595/customer-service-representative---burmese-speaker-%28thai-citizens%29---bangkok/job?mode=job&iis=LandingPage&iisn="
+  },  
+  {
+   "Positions": "Quality Analyst",
+   "Language": "Mandarin",
+   "Location": "Bangkok",
+   "Evergreen title": "Quality Analyst - Mandarin - Bangkok",
+   "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/89228/quality-analyst---mandarin-cantonese---bangkok/job?mode=job&iis=LandingPage&iisn="
+  },
+  {
+   "Positions": "Content Moderator(Video Hosting Project)",
+   "Language": "Malay",
+   "Location": "Kuala Lumpur",
+   "Evergreen title": "Content Moderator(Video Hosting Project) - Malay - Kuala Lumpur",
+   "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/49401/content-moderator---bahasa-malaysia%2b-english-%28video-hosting-project%29/job?mode=job&iis=LandingPage&iisn="
+  },
+  {
+   "Positions": "Customer Success Specialist KL (Video Hosting Project)",
+   "Language": "English",
+   "Location": "Kuala Lumpur",
+   "Evergreen title": "Customer Success Specialist - English - Kuala Lumpur (Video Hosting Project)",
+   "Evergreen link": "https://careerseng-teleperformance.icims.com/jobs/78569/customer-success-specialist---english---%28video-hosting%29-kl/job?mode=job&iis=LandingPage&iisn="
   }
  ]
